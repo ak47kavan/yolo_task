@@ -1,16 +1,56 @@
-# yolo_task
+# 💳 YOLO Pay - Flutter App
 
-A new Flutter project.
+**YOLO Pay** is a futuristic Flutter UI concept for managing digital debit cards. It includes animations, blur effects, and a custom bottom navigation bar with smooth transitions.
 
-## Getting Started
+This app also integrates with a Node.js + Faker.js backend API to fetch realistic random card data for testing purposes.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## ✨ Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- 🧊 Blur effect on card when frozen
+- ❄️ Freeze/Unfreeze toggle with animation
+- 🕹️ Custom bottom navigation bar with animation and active indicators
+- 📇 Fetches realistic card details from a mock API using `faker.js`
+- 📱 Clean, minimal, dark-themed modern UI
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 🛠️ Built With
+
+- **Flutter** (UI, animations)
+- **Faker.js API** (Node.js + Express backend for fake card data)
+- `google_fonts` (for Poppins font)
+- `dart:ui` (for blur effect)
+- REST API (for fetching card data)
+
+---
+
+## 📸 Screenshots
+
+| Main Card UI | Blur Effect | Bottom Navigation |
+|--------------|-------------|-------------------|
+| ![card](screenshots/card_ui.png) | ![blur](screenshots/blur_effect.png) | ![nav](screenshots/bottom_nav.png) |
+
+> (Add your own screenshots in `/screenshots/` folder)
+
+---
+
+## 📦 Project Structure
+
+```bash
+lib/
+│
+├── models/
+│   └── card_model.dart         # CardModel for JSON response
+│
+├── services/
+│   └── faker_service.dart      # API call to Faker backend
+│
+├── components/
+│   └── custom_bottom_navbar.dart  # Animated bottom nav bar
+│
+├── screens/
+│   └── yolo_pay_screen.dart    # Main UI screen with blur effect
+│
+└── main.dart                   # Entry point

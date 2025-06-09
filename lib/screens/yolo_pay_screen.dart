@@ -119,154 +119,179 @@ class _YoloPayScreenState extends State<YoloPayScreen> with SingleTickerProvider
                     return const Center(child: CircularProgressIndicator());
                   }
                   final card = snapshot.data!;
-return Stack(
+return Row(
+  crossAxisAlignment: CrossAxisAlignment.center,
   children: [
-    AnimatedBuilder(
-      animation: _blurAnimation,
-      builder: (context, child) {
-        return ClipRRect(
-          
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            width: double.infinity,
-            height: 240,
-            decoration: BoxDecoration(
-              color: const Color(0xFF1A1A1A), // dark card color
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.red.withOpacity(0.2),
-      blurRadius: 15,
-      spreadRadius: 1,
-      offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: ImageFiltered(
-              imageFilter: ImageFilter.blur(
-                sigmaX: _blurAnimation.value,
-                sigmaY: _blurAnimation.value,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "YOLO",
-                          style: GoogleFonts.poppins(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        Image.asset('assets/yesbank.png', height: 20),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      card.cardNumber,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        letterSpacing: 2.5,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Text(
-                          "expiry: ${card.expiry}",
-                          style: const TextStyle(
-                              color: Colors.white70, fontSize: 12),
-                        ),
-                        const SizedBox(width: 16),
-                        const Text(
-                          "cvv: ••••",
-                          style: TextStyle(
-                              color: Colors.white70, fontSize: 12),
-                        ),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.visibility_off,
-                            color: Colors.white70, size: 16)
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () {
-                        // handle copy logic
-                        Clipboard.setData(ClipboardData(text: card.cardNumber));
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(Icons.copy,
-                              color: Colors.red, size: 16),
-                          const SizedBox(width: 6),
-                          Text(
-                            "copy details",
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              color: Colors.red,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Image.asset('assets/rupay.png', height: 24),
+    Stack(
+      children: [
+        AnimatedBuilder(
+          animation: _blurAnimation,
+          builder: (context, child) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                width: 240,
+                height: 340,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1A1A1A),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.red.withOpacity(0.2),
+                      blurRadius: 15,
+                      spreadRadius: 1,
+                      offset: const Offset(0, 6),
                     ),
                   ],
                 ),
+                child: ImageFiltered(
+                  imageFilter: ImageFilter.blur(
+                    sigmaX: _blurAnimation.value,
+                    sigmaY: _blurAnimation.value,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "YOLO",
+                              style: GoogleFonts.tourney(
+                                color: Colors.red,
+                                decorationStyle: TextDecorationStyle.wavy,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Image.asset('assets/yesbank.png', height: 35),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Card Number Split in 4-digit chunks
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(4, (i) {
+                            final start = i * 4;
+                            final end = start + 4;
+                            return Text(
+                              card.cardNumber.substring(start, end),
+                              style: GoogleFonts.orbitron(
+                                color: Colors.white54,
+                                fontSize: 20,
+                                letterSpacing: 2.5,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            );
+                          }),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // Expiry and CVV row
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "cvv: ••••",
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 12,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.date_range,
+                                    size: 14, color: Colors.white70),
+                                const SizedBox(width: 4),
+                                Text(
+                                  "exp: ${card.expiry}",
+                                  style: GoogleFonts.orbitron(
+                                  fontSize: 12,
+                                  color: Colors.white70,
+                                  //fontWeight: FontWeight.w500,
+                                ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Copy Details
+                        GestureDetector(
+                          onTap: () {
+                            Clipboard.setData(
+                                ClipboardData(text: card.cardNumber));
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(Icons.copy,
+                                  color: Colors.red, size: 16),
+                              const SizedBox(width: 6),
+                              Text(
+                                "copy details",
+                                style: GoogleFonts.orbitron(
+                                  fontSize: 12,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Image.asset('assets/rupay.png', height: 34),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
+            );
+          },
+        ),
+      ],
+    ),
+    const SizedBox(width: 12),
+
+    // Freeze Icon Outside the Card
+    Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: toggleFreeze,
+          child: Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.red, width: 1),
+              shape: BoxShape.circle,
+              color: Colors.black.withOpacity(0.3),
+            ),
+            child: const Icon(Icons.ac_unit, color: Colors.white, size: 20),
+          ),
+        ),
+        const SizedBox(height: 6),
+        GestureDetector(
+          onTap: toggleFreeze,
+          child: Text(
+            isFrozen ? "unfreeze" : "freeze",
+            style: GoogleFonts.poppins(
+              color: const Color(0xFFA90808),
+              fontSize: 12,
             ),
           ),
-        );
-      },
-    ),
-    Positioned(
-      top: 60,
-      right: 5,
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: toggleFreeze,
-            child:Container(
-  width: 42,
-  height: 42,
-  decoration: BoxDecoration(
-    border: Border.all(color: Colors.red, width: 1),
-    shape: BoxShape.circle,
-    color: Colors.black.withOpacity(0.3),
-  ),
-  child: const Icon(Icons.ac_unit, color: Colors.white, size: 20),
-),
-
-            ),
-        
-          const SizedBox(height: 4),
-          GestureDetector(
-            onTap: toggleFreeze,
-            child: Text(
-              isFrozen ? "unfreeze" : "freeze",
-              style: GoogleFonts.poppins(
-                color: const Color(0xFFA90808),
-                fontSize: 12,
-              ),
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     ),
   ],
 );
-
                 },
               ),
             ],

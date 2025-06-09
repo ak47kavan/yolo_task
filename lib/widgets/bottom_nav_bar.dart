@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui'; // For ImageFilter - although not directly used in this specific nav bar, good practice for custom painters
+// For ImageFilter - although not directly used in this specific nav bar, good practice for custom painters
 
 class CustomCurvedBottomNavBar extends StatefulWidget {
   final int selectedIndex;
