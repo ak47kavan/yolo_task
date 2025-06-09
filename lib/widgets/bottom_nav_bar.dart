@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// For ImageFilter - although not directly used in this specific nav bar, good practice for custom painters
+
 
 class CustomCurvedBottomNavBar extends StatefulWidget {
   final int selectedIndex;
@@ -35,7 +35,6 @@ class _CustomCurvedBottomNavBarState extends State<CustomCurvedBottomNavBar>
       ),
     );
 
-    // Start animation if yolo pay is initially selected
     if (widget.selectedIndex == 1) {
       _yoloPayAnimationController.forward();
     }
@@ -78,11 +77,11 @@ class _CustomCurvedBottomNavBarState extends State<CustomCurvedBottomNavBar>
           CustomPaint(
             size: Size(size.width, navBarHeight),
             painter: _CurvedNavBarPainter(
-              curveHeight: curveHeight, // Use the defined curve height
-              backgroundColor: const Color(0xFF1E1E1E), // Darker grey for nav bar
+              curveHeight: curveHeight, 
+              backgroundColor: const Color(0xFF1E1E1E),
             ),
           ),
-          // Navigation Items Row
+       
           Positioned(
             bottom: 0,
             left: 0,
@@ -218,26 +217,20 @@ class _CurvedNavBarPainter extends CustomPainter {
     final paint = Paint()..color = backgroundColor;
     final path = Path();
 
-    // Start from the bottom-left corner.
     path.moveTo(0, size.height);
-    // Draw a line up to the point where the curve should start.
-    // The y-coordinate is calculated from the top, so a smaller value is higher.
-    // Let's start the curve lower down to give it space.
+    
     path.lineTo(0, curveHeight);
 
-    // A single quadratic bezier curve to create a semi-circular effect.
-    // The control point is positioned in the horizontal center and above the top edge
-    // of the widget's bounds (y < 0) to create a smooth, single, upward arc.
+
     path.quadraticBezierTo(
-      size.width / 2,   // Control point X: Horizontal center
-      -curveHeight,     // Control point Y: Above the canvas to pull the curve upwards
-      size.width,       // End point X: Right edge
-      curveHeight       // End point Y: Same height as the start of the curve
+      size.width / 2,   
+      -curveHeight,     
+      size.width,     
+      curveHeight      
     );
 
-    // Draw a line down the right side to the bottom-right corner.
     path.lineTo(size.width, size.height);
-    // Close the path to complete the shape by drawing a line along the bottom.
+ 
     path.close();
 
     canvas.drawPath(path, paint);
@@ -245,7 +238,7 @@ class _CurvedNavBarPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _CurvedNavBarPainter oldDelegate) {
-    // Repaint if the curveHeight or backgroundColor changes.
+
     return oldDelegate.curveHeight != curveHeight ||
            oldDelegate.backgroundColor != backgroundColor;
   }
